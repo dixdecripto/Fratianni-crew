@@ -80,6 +80,7 @@
     transition:border-color .15s,background .15s;
   }
   textarea{resize:none;min-height:64px;}
+  .textarea-big{min-height:120px;}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);background:var(--field-focus);}
   select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238f8c85' d='M6 8 0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
 
@@ -199,6 +200,7 @@
           </div>
         </div>
         <input type="file" accept="image/*" capture="user" id="photoInput" class="photo-input-hidden">
+        <div class="consent" data-c="foto" id="consensoFoto" style="margin-top:16px;display:none;"><div class="box"></div><div class="lbl"><b>Acconsento a farmi fotografare</b><span>Autorizzo Fratianni Service a conservare questa foto al solo scopo di riconoscermi e associarla al mio profilo. Non verr&agrave; pubblicata n&eacute; diffusa senza un mio ulteriore consenso esplicito.</span></div></div>
       </div>
 
       <div class="card">
@@ -238,7 +240,7 @@
         </div>
 
         <div class="field">
-          <label>Guidi bene furgoni e pulmini?</label>
+          <label>Guidi bene furgoni e pasino?</label>
           <div class="chips" id="guida" data-single="1">
             <div class="chip" data-v="Sì, tranquillamente">S&igrave;, tranquillamente</div>
             <div class="chip" data-v="Me la cavo">Me la cavo</div>
@@ -256,21 +258,19 @@
           <input type="text" id="lingueAltro" autocomplete="off" placeholder="Altre lingue? Scrivile qui (es. cinese, arabo&hellip;)" style="margin-top:10px;">
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Disponibilit&agrave; a collaborare <span class="opt">(scegli una o pi&ugrave;)</span></label>
-            <div class="chips" id="disponibilita">
-              <div class="chip" data-v="Subito / a chiamata">Subito / a chiamata</div>
-              <div class="chip" data-v="Nei weekend">Nei weekend</div>
-              <div class="chip" data-v="Per progetti lunghi">Per progetti lunghi</div>
-              <div class="chip" data-v="Da valutare">Da valutare</div>
-              <div class="chip chip-all" data-all="1">Tutte</div>
-            </div>
+        <div class="field">
+          <label>Disponibilit&agrave; a collaborare <span class="opt">(scegli una o pi&ugrave;)</span></label>
+          <div class="chips" id="disponibilita">
+            <div class="chip" data-v="Subito / a chiamata">Subito / a chiamata</div>
+            <div class="chip" data-v="Nei weekend">Nei weekend</div>
+            <div class="chip" data-v="Per progetti lunghi">Per progetti lunghi</div>
+            <div class="chip" data-v="Da valutare">Da valutare</div>
+            <div class="chip chip-all" data-all="1">Tutte</div>
           </div>
-          <div class="field">
-            <label>Esperienze e preferenze <span class="opt">(scrivi ci&ograve; che vuoi)</span></label>
-            <textarea id="esperienze" placeholder="Raccontaci la tua esperienza, cosa preferisci fare, cosa eviteresti&hellip;"></textarea>
-          </div>
+        </div>
+        <div class="field">
+          <label>Esperienze e preferenze <span class="opt">(scrivi ci&ograve; che vuoi)</span></label>
+          <textarea id="esperienze" class="textarea-big" placeholder="Raccontaci la tua esperienza, cosa preferisci fare, cosa eviteresti&hellip;"></textarea>
         </div>
       </div>
 
@@ -286,9 +286,6 @@
           <div class="consent" data-c="aggiornamenti"><div class="box"></div><div class="lbl"><b>Aggiornamenti &amp; novit&agrave;</b><span>Acconsento a ricevere comunicazioni su prodotti, servizi e novit&agrave; della community Fratianni.</span></div></div>
         </div>
         <div class="required-note">Devi spuntare almeno uno dei tre consensi qui sopra per inviare. Il titolare del trattamento &egrave; Fratianni Service. I tuoi dati vengono usati solo per le finalit&agrave; che hai scelto, non vengono ceduti a terzi e puoi chiederne la cancellazione in qualsiasi momento scrivendo a Fratianni Service.</div>
-        <div class="consents" style="margin-top:12px;">
-          <div class="consent" data-c="foto" style="grid-column:1 / -1;"><div class="box"></div><div class="lbl"><b>Consenso alla foto</b><span>Acconsento a farmi fotografare e autorizzo Fratianni Service a conservare la mia foto al solo scopo di riconoscermi e associarla al mio profilo. La foto non verr&agrave; pubblicata n&eacute; diffusa senza un mio ulteriore consenso esplicito.</span></div></div>
-        </div>
       </div>
 
       <div class="card">
@@ -442,6 +439,7 @@ photoInput.addEventListener('change', (ev)=>{
       photoPreview.classList.add('has-img');
       photoTake.textContent = '\u2713 Foto pronta';
       photoRetake.classList.remove('photo-input-hidden');
+      document.getElementById('consensoFoto').style.display = 'flex';
     };
     img.src = e.target.result;
   };
@@ -490,6 +488,7 @@ function resetForm(){
   photoPreview.classList.remove('has-img');
   photoTake.textContent='\uD83D\uDCF7 Scatta / carica foto';
   photoRetake.classList.add('photo-input-hidden');
+  document.getElementById('consensoFoto').style.display='none';
   const btn=$('submitBtn');btn.disabled=false;btn.textContent='Entra nella crew';
   document.querySelector('.main').scrollTo({top:0});
 }
