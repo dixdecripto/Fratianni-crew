@@ -91,6 +91,8 @@
   .chip{padding:11px 16px;border:1px solid var(--line);border-radius:100px;font-size:14px;color:var(--ink-dim);cursor:pointer;user-select:none;transition:all .12s;background:var(--field);font-weight:500;}
   .chip:active{transform:scale(.96);}
   .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700;}
+  .chip-all{border-color:var(--gold);color:var(--gold);}
+  .chip-all.on{background:var(--gold);color:var(--bg);border-color:var(--gold);}
 
   .consents{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
   @media(max-width:900px){.consents{grid-template-columns:1fr;}}
@@ -207,51 +209,98 @@
         </div>
         <div class="grid-3">
           <div class="field"><label>Telefono</label><input type="tel" id="telefono" inputmode="tel" autocomplete="off"></div>
-          <div class="field"><label>Email <span class="opt">(facolt.)</span></label><input type="email" id="email" inputmode="email" autocomplete="off"></div>
-          <div class="field"><label>Citt&agrave;</label><input type="text" id="citta" autocomplete="off" placeholder="Napoli, Roma&hellip;"></div>
+          <div class="field"><label>Email</label><input type="email" id="email" inputmode="email" autocomplete="off"></div>
+          <div class="field"><label>Citt&agrave; di residenza</label><input type="text" id="citta" autocomplete="off" placeholder="Es. Napoli"></div>
+        </div>
+        <div class="field">
+          <label>Disponibile a trasferte fuori dalla tua citt&agrave;?</label>
+          <div class="chips" id="trasferte" data-single="1">
+            <div class="chip" data-v="Sì">S&igrave;</div>
+            <div class="chip" data-v="No">No</div>
+          </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-label">Cosa sai fare</div>
+        <div class="section-label">Che ruolo/i copri?</div>
         <div class="field">
-          <label>Ruolo / competenze <span class="opt">(scegli uno o pi&ugrave;)</span></label>
+          <label>Ruoli <span class="opt">(scegli uno o pi&ugrave;)</span></label>
           <div class="chips" id="ruoli">
             <div class="chip" data-v="Manovale">Manovale</div>
-            <div class="chip" data-v="Autista">Autista</div>
             <div class="chip" data-v="Facilities">Facilities</div>
-            <div class="chip" data-v="Runner">Runner</div>
-            <div class="chip" data-v="Tecnico">Tecnico</div>
-            <div class="chip" data-v="Produzione">Produzione</div>
-            <div class="chip" data-v="Catering">Catering / Craft</div>
-            <div class="chip" data-v="Magazzino">Magazzino</div>
+            <div class="chip" data-v="Assistente di produzione">Assistente di produzione</div>
+            <div class="chip" data-v="Production management">Production management</div>
+            <div class="chip" data-v="Client">Client</div>
+            <div class="chip" data-v="Catering / Craft">Catering / Craft</div>
             <div class="chip" data-v="Altro">Altro</div>
           </div>
+          <input type="text" id="ruoliAltro" autocomplete="off" placeholder="Specifica il tuo ruolo&hellip;" style="margin-top:10px;display:none;">
         </div>
+
+        <div class="field">
+          <label>Guidi bene furgoni e pulmini?</label>
+          <div class="chips" id="guida" data-single="1">
+            <div class="chip" data-v="Sì, tranquillamente">S&igrave;, tranquillamente</div>
+            <div class="chip" data-v="Me la cavo">Me la cavo</div>
+            <div class="chip" data-v="No">No</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Lingue parlate <span class="opt">(scegli quelle che parli)</span></label>
+          <div class="chips" id="lingue">
+            <div class="chip" data-v="Inglese">Inglese</div>
+            <div class="chip" data-v="Spagnolo">Spagnolo</div>
+            <div class="chip" data-v="Francese">Francese</div>
+          </div>
+          <input type="text" id="lingueAltro" autocomplete="off" placeholder="Altre lingue? Scrivile qui (es. cinese, arabo&hellip;)" style="margin-top:10px;">
+        </div>
+
         <div class="grid-2">
-          <div class="field"><label>Patenti / esperienze <span class="opt">(facolt.)</span></label><textarea id="patenti" placeholder="Es. Patente B, C, muletto, 3 anni sui set&hellip;"></textarea></div>
-          <div class="field"><label>Disponibilit&agrave; a collaborare</label>
-            <select id="disponibilita">
-              <option value="">Seleziona&hellip;</option>
-              <option>Subito / a chiamata</option>
-              <option>Nei weekend</option>
-              <option>Solo per progetti specifici</option>
-              <option>Da valutare</option>
-            </select>
+          <div class="field">
+            <label>Disponibilit&agrave; a collaborare <span class="opt">(scegli una o pi&ugrave;)</span></label>
+            <div class="chips" id="disponibilita">
+              <div class="chip" data-v="Subito / a chiamata">Subito / a chiamata</div>
+              <div class="chip" data-v="Nei weekend">Nei weekend</div>
+              <div class="chip" data-v="Per progetti lunghi">Per progetti lunghi</div>
+              <div class="chip" data-v="Da valutare">Da valutare</div>
+              <div class="chip chip-all" data-all="1">Tutte</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Esperienze e preferenze <span class="opt">(scrivi ci&ograve; che vuoi)</span></label>
+            <textarea id="esperienze" placeholder="Raccontaci la tua esperienza, cosa preferisci fare, cosa eviteresti&hellip;"></textarea>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-label">Come possiamo contattarti</div>
-        <div class="consents">
-          <div class="consent" data-c="lavoro"><div class="box"></div><div class="lbl"><b>Lavoro</b><span>Ti chiamiamo quando c&rsquo;&egrave; un lavoro adatto.</span></div></div>
-          <div class="consent" data-c="eventi"><div class="box"></div><div class="lbl"><b>Workshop &amp; feste</b><span>Inviti a open day, workshop ed eventi.</span></div></div>
-          <div class="consent" data-c="aggiornamenti"><div class="box"></div><div class="lbl"><b>Aggiornamenti</b><span>Novit&agrave; dalla community Fratianni.</span></div></div>
+        <div class="section-label">Consensi</div>
+        <p style="color:var(--ink-dim);font-size:13.5px;line-height:1.5;margin-bottom:16px;">Scegli tu come vuoi che Fratianni Service ti contatti. Ogni consenso &egrave; libero e separato: spunti solo quello che ti interessa, e puoi cambiare idea o cancellarti quando vuoi.</p>
+        <div style="margin-bottom:12px;">
+          <div class="chip chip-all" id="consensiTutti" style="display:inline-block;">Spunta tutti</div>
         </div>
-        <div class="required-note">Scegli almeno un&rsquo;opzione. Puoi disiscriverti quando vuoi. I dati restano a Fratianni Service e non vengono ceduti a terzi.</div>
+        <div class="consents">
+          <div class="consent" data-c="lavoro"><div class="box"></div><div class="lbl"><b>Opportunit&agrave; di lavoro</b><span>Acconsento a essere contattato via telefono, email o messaggio per proposte di collaborazione e lavoro.</span></div></div>
+          <div class="consent" data-c="eventi"><div class="box"></div><div class="lbl"><b>Workshop, eventi &amp; feste</b><span>Acconsento a ricevere inviti a open day, workshop, eventi e feste organizzati da Fratianni Service.</span></div></div>
+          <div class="consent" data-c="aggiornamenti"><div class="box"></div><div class="lbl"><b>Aggiornamenti &amp; novit&agrave;</b><span>Acconsento a ricevere comunicazioni su prodotti, servizi e novit&agrave; della community Fratianni.</span></div></div>
+        </div>
+        <div class="required-note">Devi spuntare almeno uno dei tre consensi qui sopra per inviare. Il titolare del trattamento &egrave; Fratianni Service. I tuoi dati vengono usati solo per le finalit&agrave; che hai scelto, non vengono ceduti a terzi e puoi chiederne la cancellazione in qualsiasi momento scrivendo a Fratianni Service.</div>
         <div class="consents" style="margin-top:12px;">
-          <div class="consent" data-c="foto" style="grid-column:1 / -1;"><div class="box"></div><div class="lbl"><b>Consenso alla foto</b><span>Autorizzo Fratianni Service a conservare la mia foto per riconoscermi. Non verr&agrave; pubblicata senza un mio ulteriore ok.</span></div></div>
+          <div class="consent" data-c="foto" style="grid-column:1 / -1;"><div class="box"></div><div class="lbl"><b>Consenso alla foto</b><span>Acconsento a farmi fotografare e autorizzo Fratianni Service a conservare la mia foto al solo scopo di riconoscermi e associarla al mio profilo. La foto non verr&agrave; pubblicata n&eacute; diffusa senza un mio ulteriore consenso esplicito.</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Dove hai compilato?</div>
+        <div class="field">
+          <label>Da dove stai compilando <span class="opt">(aiutaci a capire come ci hai trovato)</span></label>
+          <div class="chips" id="provenienza" data-single="1">
+            <div class="chip" data-v="Magazzino">Magazzino</div>
+            <div class="chip" data-v="QR code">QR code</div>
+            <div class="chip" data-v="Link">Link</div>
+            <div class="chip" data-v="Sito">Sito</div>
+          </div>
         </div>
       </div>
 
@@ -290,14 +339,78 @@ const AUTORESET_SECONDS = 12;
 document.getElementById('igqr').src =
   "https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=0&data=" + encodeURIComponent(IG_URL);
 
-const selectedRoles = new Set();
-document.querySelectorAll('#ruoli .chip').forEach(c=>{
-  c.addEventListener('click',()=>{c.classList.toggle('on');const v=c.dataset.v;c.classList.contains('on')?selectedRoles.add(v):selectedRoles.delete(v);});
+/* ---- gestione gruppi di "chip" (generico) ----
+   - normale: multi-selezione
+   - data-single="1": selezione singola (trasferte, guida)
+   - chip con data-all="1": seleziona/deseleziona tutti gli altri del gruppo
+*/
+function setupChips(groupId){
+  const group = document.getElementById(groupId);
+  const single = group.dataset.single === "1";
+  const chips = [...group.querySelectorAll('.chip')];
+  const allBtn = group.querySelector('.chip[data-all]');
+  chips.forEach(c=>{
+    c.addEventListener('click', ()=>{
+      if(c.dataset.all){
+        // pulsante "Tutte": se non tutti attivi -> attiva tutti, altrimenti azzera
+        const others = chips.filter(x=>!x.dataset.all);
+        const allOn = others.every(x=>x.classList.contains('on'));
+        others.forEach(x=>x.classList.toggle('on', !allOn));
+        c.classList.toggle('on', !allOn);
+        return;
+      }
+      if(single){
+        chips.forEach(x=>{ if(x!==c) x.classList.remove('on'); });
+        c.classList.toggle('on');
+      } else {
+        c.classList.toggle('on');
+      }
+      // aggiorno lo stato del pulsante "Tutte" se presente
+      if(allBtn){
+        const others = chips.filter(x=>!x.dataset.all);
+        allBtn.classList.toggle('on', others.every(x=>x.classList.contains('on')));
+      }
+    });
+  });
+}
+['ruoli','lingue','disponibilita','trasferte','guida','provenienza'].forEach(setupChips);
+
+/* campo testo "Altro" nei ruoli: compare solo se selezionato */
+const ruoliAltroInput = document.getElementById('ruoliAltro');
+document.querySelector('#ruoli .chip[data-v="Altro"]').addEventListener('click', function(){
+  const on = this.classList.contains('on');
+  ruoliAltroInput.style.display = on ? 'block' : 'none';
+  if(!on) ruoliAltroInput.value='';
 });
+
+// legge i valori selezionati di un gruppo (esclude il pulsante "Tutte")
+function readChips(groupId){
+  return [...document.querySelectorAll('#'+groupId+' .chip.on')]
+    .filter(c=>!c.dataset.all)
+    .map(c=>c.dataset.v)
+    .join(', ');
+}
+
 const consents = {lavoro:false,eventi:false,aggiornamenti:false,foto:false};
 document.querySelectorAll('.consent').forEach(el=>{
-  el.addEventListener('click',()=>{el.classList.toggle('on');consents[el.dataset.c]=el.classList.contains('on');});
+  el.addEventListener('click',()=>{el.classList.toggle('on');consents[el.dataset.c]=el.classList.contains('on');syncConsensiTutti();});
 });
+
+/* pulsante "Spunta tutti": attiva/disattiva i 3 consensi di contatto (non la foto) */
+const consensiTutti = document.getElementById('consensiTutti');
+const contactConsents = ['lavoro','eventi','aggiornamenti'];
+consensiTutti.addEventListener('click', ()=>{
+  const allOn = contactConsents.every(k=>consents[k]);
+  contactConsents.forEach(k=>{
+    consents[k] = !allOn;
+    const el = document.querySelector('.consent[data-c="'+k+'"]');
+    el.classList.toggle('on', !allOn);
+  });
+  consensiTutti.classList.toggle('on', !allOn);
+});
+function syncConsensiTutti(){
+  consensiTutti.classList.toggle('on', contactConsents.every(k=>consents[k]));
+}
 
 /* ---- gestione foto ---- */
 let fotoData = "";
@@ -337,18 +450,27 @@ photoInput.addEventListener('change', (ev)=>{
 const $ = id => document.getElementById(id);
 const err = $('err');
 function validate(){
-  const okBase = $('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim();
+  const email = $('email').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const okBase = $('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim() && emailOk;
   const okConsent = consents.lavoro||consents.eventi||consents.aggiornamenti;
   // se ha scattato una foto, deve aver dato il consenso foto
   if(fotoData && !consents.foto){ err.textContent = "Hai aggiunto una foto: spunta anche il consenso alla foto per inviarla."; return false; }
-  err.textContent = "Compila i campi obbligatori e scegli almeno un consenso.";
+  if($('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim() && !emailOk){ err.textContent = "Inserisci un indirizzo email valido."; return false; }
+  err.textContent = "Compila tutti i campi obbligatori (inclusa l'email) e scegli almeno un consenso.";
   return okBase && okConsent;
 }
 $('submitBtn').addEventListener('click', async ()=>{
   if(!validate()){err.style.display='block';document.querySelector('.main').scrollTo({top:0,behavior:'smooth'});return;}
   err.style.display='none';
   const btn=$('submitBtn');btn.disabled=true;btn.textContent='Invio…';
-  const data={timestamp:new Date().toISOString(),foto:(consents.foto?fotoData:""),nome:$('nome').value.trim(),cognome:$('cognome').value.trim(),telefono:$('telefono').value.trim(),email:$('email').value.trim(),citta:$('citta').value.trim(),ruoli:[...selectedRoles].join(', '),patenti:$('patenti').value.trim(),disponibilita:$('disponibilita').value,consenso_lavoro:consents.lavoro?'Sì':'No',consenso_eventi:consents.eventi?'Sì':'No',consenso_aggiornamenti:consents.aggiornamenti?'Sì':'No',consenso_foto:consents.foto?'Sì':'No'};
+  const lingueBase = readChips('lingue');
+  const lingueAltro = $('lingueAltro').value.trim();
+  const lingue = [lingueBase, lingueAltro].filter(x=>x).join(', ');
+  let ruoli = readChips('ruoli');
+  const ruoliAltroTxt = $('ruoliAltro').value.trim();
+  if(ruoliAltroTxt){ ruoli = ruoli.replace('Altro', 'Altro: '+ruoliAltroTxt); }
+  const data={timestamp:new Date().toISOString(),foto:(consents.foto?fotoData:""),nome:$('nome').value.trim(),cognome:$('cognome').value.trim(),telefono:$('telefono').value.trim(),email:$('email').value.trim(),citta:$('citta').value.trim(),trasferte:readChips('trasferte'),ruoli:ruoli,guida_mezzi:readChips('guida'),lingue:lingue,disponibilita:readChips('disponibilita'),esperienze:$('esperienze').value.trim(),provenienza:readChips('provenienza'),consenso_lavoro:consents.lavoro?'Sì':'No',consenso_eventi:consents.eventi?'Sì':'No',consenso_aggiornamenti:consents.aggiornamenti?'Sì':'No',consenso_foto:consents.foto?'Sì':'No'};
   try{
     if(SCRIPT_URL){await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});}
     showSuccess();
@@ -357,9 +479,10 @@ $('submitBtn').addEventListener('click', async ()=>{
   }
 });
 function resetForm(){
-  ['nome','cognome','telefono','email','citta','patenti'].forEach(id=>$(id).value='');
-  $('disponibilita').value='';selectedRoles.clear();
-  document.querySelectorAll('#ruoli .chip').forEach(c=>c.classList.remove('on'));
+  ['nome','cognome','telefono','email','citta','esperienze','lingueAltro','ruoliAltro'].forEach(id=>$(id).value='');
+  document.querySelectorAll('.chip.on').forEach(c=>c.classList.remove('on'));
+  ruoliAltroInput.style.display='none';
+  consensiTutti.classList.remove('on');
   Object.keys(consents).forEach(k=>consents[k]=false);
   document.querySelectorAll('.consent').forEach(el=>el.classList.remove('on'));
   fotoData="";photoInput.value="";
