@@ -84,9 +84,14 @@
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);background:var(--field-focus);}
   select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238f8c85' d='M6 8 0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
 
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+  .grid-2 .field,.grid-3 .field{margin-bottom:0;}
+  .grid-2:last-child,.grid-3:last-child{margin-bottom:0;}
   @media(max-width:900px){.grid-3{grid-template-columns:1fr 1fr;}}
+  @media(max-width:620px){
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+  }
 
   .chips{display:flex;flex-wrap:wrap;gap:9px;}
   .chip{padding:11px 16px;border:1px solid var(--line);border-radius:100px;font-size:14px;color:var(--ink-dim);cursor:pointer;user-select:none;transition:all .12s;background:var(--field);font-weight:500;}
@@ -212,7 +217,7 @@
         <div class="grid-3">
           <div class="field"><label>Telefono</label><input type="tel" id="telefono" inputmode="tel" autocomplete="off"></div>
           <div class="field"><label>Email</label><input type="email" id="email" inputmode="email" autocomplete="off"></div>
-          <div class="field"><label>Citt&agrave; di residenza</label><input type="text" id="citta" autocomplete="off" placeholder="Es. Napoli"></div>
+          <div class="field"><label>Citt&agrave; di residenza</label><input type="text" id="citta" autocomplete="off"></div>
         </div>
         <div class="field">
           <label>Disponibile a trasferte fuori dalla tua citt&agrave;?</label>
