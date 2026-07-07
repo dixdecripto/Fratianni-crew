@@ -220,6 +220,14 @@
           <div class="field"><label>Citt&agrave; di residenza</label><input type="text" id="citta" autocomplete="off"></div>
         </div>
         <div class="field">
+          <label>Data di nascita</label>
+          <div class="grid-3" style="margin-bottom:0;">
+            <select id="natoGiorno"><option value="">Giorno</option></select>
+            <select id="natoMese"><option value="">Mese</option></select>
+            <select id="natoAnno"><option value="">Anno</option></select>
+          </div>
+        </div>
+        <div class="field">
           <label>Disponibile a trasferte fuori dalla tua citt&agrave;?</label>
           <div class="chips" id="trasferte" data-single="1">
             <div class="chip" data-v="Sì">S&igrave;</div>
@@ -341,6 +349,18 @@ const AUTORESET_SECONDS = 12;
 document.getElementById('igqr').src =
   "https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=0&data=" + encodeURIComponent(IG_URL);
 
+/* ---- popola i menu della data di nascita ---- */
+(function(){
+  const g = document.getElementById('natoGiorno');
+  const m = document.getElementById('natoMese');
+  const a = document.getElementById('natoAnno');
+  for(let i=1;i<=31;i++){ const o=document.createElement('option'); o.value=String(i).padStart(2,'0'); o.textContent=i; g.appendChild(o); }
+  const mesi=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+  mesi.forEach((nome,idx)=>{ const o=document.createElement('option'); o.value=String(idx+1).padStart(2,'0'); o.textContent=nome; m.appendChild(o); });
+  const annoOggi=new Date().getFullYear();
+  for(let y=annoOggi-16; y>=annoOggi-80; y--){ const o=document.createElement('option'); o.value=String(y); o.textContent=y; a.appendChild(o); }
+})();
+
 /* ---- gestione gruppi di "chip" (generico) ----
    - normale: multi-selezione
    - data-single="1": selezione singola (trasferte, guida)
@@ -455,11 +475,13 @@ const err = $('err');
 function validate(){
   const email = $('email').value.trim();
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const okBase = $('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim() && emailOk;
+  const dataOk = $('natoGiorno').value && $('natoMese').value && $('natoAnno').value;
+  const okBase = $('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim() && emailOk && dataOk;
   const okConsent = consents.lavoro||consents.eventi||consents.aggiornamenti;
   // se ha scattato una foto, deve aver dato il consenso foto
   if(fotoData && !consents.foto){ err.textContent = "Hai aggiunto una foto: spunta anche il consenso alla foto per inviarla."; return false; }
   if($('nome').value.trim() && $('cognome').value.trim() && $('telefono').value.trim() && $('citta').value.trim() && !emailOk){ err.textContent = "Inserisci un indirizzo email valido."; return false; }
+  if(emailOk && $('nome').value.trim() && $('cognome').value.trim() && !dataOk){ err.textContent = "Seleziona la tua data di nascita completa (giorno, mese e anno)."; return false; }
   err.textContent = "Compila tutti i campi obbligatori (inclusa l'email) e scegli almeno un consenso.";
   return okBase && okConsent;
 }
@@ -473,7 +495,8 @@ $('submitBtn').addEventListener('click', async ()=>{
   let ruoli = readChips('ruoli');
   const ruoliAltroTxt = $('ruoliAltro').value.trim();
   if(ruoliAltroTxt){ ruoli = ruoli.replace('Altro', 'Altro: '+ruoliAltroTxt); }
-  const data={timestamp:new Date().toISOString(),foto:(consents.foto?fotoData:""),nome:$('nome').value.trim(),cognome:$('cognome').value.trim(),telefono:$('telefono').value.trim(),email:$('email').value.trim(),citta:$('citta').value.trim(),trasferte:readChips('trasferte'),ruoli:ruoli,guida_mezzi:readChips('guida'),lingue:lingue,disponibilita:readChips('disponibilita'),esperienze:$('esperienze').value.trim(),provenienza:readChips('provenienza'),consenso_lavoro:consents.lavoro?'Sì':'No',consenso_eventi:consents.eventi?'Sì':'No',consenso_aggiornamenti:consents.aggiornamenti?'Sì':'No',consenso_foto:consents.foto?'Sì':'No'};
+  const dataNascita = [$('natoGiorno').value, $('natoMese').value, $('natoAnno').value].join('/');
+  const data={timestamp:new Date().toISOString(),foto:(consents.foto?fotoData:""),nome:$('nome').value.trim(),cognome:$('cognome').value.trim(),data_nascita:dataNascita,telefono:$('telefono').value.trim(),email:$('email').value.trim(),citta:$('citta').value.trim(),trasferte:readChips('trasferte'),ruoli:ruoli,guida_mezzi:readChips('guida'),lingue:lingue,disponibilita:readChips('disponibilita'),esperienze:$('esperienze').value.trim(),provenienza:readChips('provenienza'),consenso_lavoro:consents.lavoro?'Sì':'No',consenso_eventi:consents.eventi?'Sì':'No',consenso_aggiornamenti:consents.aggiornamenti?'Sì':'No',consenso_foto:consents.foto?'Sì':'No'};
   try{
     if(SCRIPT_URL){await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});}
     showSuccess();
@@ -482,7 +505,7 @@ $('submitBtn').addEventListener('click', async ()=>{
   }
 });
 function resetForm(){
-  ['nome','cognome','telefono','email','citta','esperienze','lingueAltro','ruoliAltro'].forEach(id=>$(id).value='');
+  ['nome','cognome','telefono','email','citta','esperienze','lingueAltro','ruoliAltro','natoGiorno','natoMese','natoAnno'].forEach(id=>$(id).value='');
   document.querySelectorAll('.chip.on').forEach(c=>c.classList.remove('on'));
   ruoliAltroInput.style.display='none';
   consensiTutti.classList.remove('on');
